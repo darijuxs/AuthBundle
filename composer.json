@@ -1,0 +1,32 @@
+{
+    "name": "bs/auth",
+    "description": "Give particular user access to different resources",
+    "type": "symfony-bundle",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "Darius Džervus",
+            "email": "team.duel@gmail.com"
+        }
+    ],
+    "keywords": [
+        "authentication",
+        "user"
+    ],
+    "license": [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "RAPIBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "develop"
+        }
+    }
+}

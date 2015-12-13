@@ -1,0 +1,3 @@
+auth_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: AuthBundle:Default:index }
