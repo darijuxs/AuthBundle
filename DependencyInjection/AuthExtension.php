@@ -22,6 +22,9 @@ class AuthExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter("auth.data_manager", $config["data_manager"]);
+        $container->setParameter("auth.current_user", $config["current_user"]);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }

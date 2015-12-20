@@ -1,4 +1,15 @@
 services:
-#    auth.example:
-#        class: AuthBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    auth.doctrine_manager:
+        class: AuthBundle\Authentication\DoctrineManager
+        calls:
+            - [setManager, ["@service_container"]]
+
+    auth.current_user:
+        class: AuthBundle\Authentication\CurrentUser\CurrentUser
+        parent: auth.doctrine_manager
+        calls:
+            - [setCurrentUserManager, ["%auth.current_user%"]]
+
+    auth.login:
+        class: AuthBundle\Authentication\Authentication
+        arguments: ["@bs.rapi.request", "@auth.current_user"]
