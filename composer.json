@@ -2,7 +2,6 @@
     "name": "bs/auth",
     "description": "Give particular user access to different resources",
     "type": "symfony-bundle",
-    "version": "0.0.1",
     "authors": [
         {
             "name": "Darius Džervus",
