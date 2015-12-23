@@ -97,7 +97,7 @@ class User
 
     /**
      * @var Role
-     * @ORM\OneToOne(targetEntity="AuthBundle\Entity\Role\Role", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="AuthBundle\Entity\Role\Role")
      */
     private $role;
 

@@ -91,7 +91,7 @@ class Access
      * @param User $user
      * @return $this
      */
-    public function setUser(User $user)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -111,7 +111,7 @@ class Access
      * @param Role $role
      * @return $this
      */
-    public function setRole(Role $role)
+    public function setRole(Role $role = null)
     {
         $this->role = $role;
 

@@ -65,10 +65,10 @@ class RoleCommand extends Command
                     $input->getArgument('name')
                 );
         } catch (RoleExistsException $e) {
-            $output->writeln($e->getMessage());
+            $output->writeln('<fg=red>'.$e->getMessage().'</>');
             return;
         }
 
-        $output->writeln($role->getName());
+        $output->writeln(sprintf('<fg=green> Role "%s" created successfully.</>', $role->getName()));
     }
 }

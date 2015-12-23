@@ -20,8 +20,20 @@ services:
         tags:
             -  { name: console.command }
 
+    auth.command.access_command:
+        class: AuthBundle\Command\AccessCommand
+        arguments: ["@auth.doctrine_manager", "@auth.access_service"]
+        tags:
+            -  { name: console.command }
+
     auth.role_service:
         class: AuthBundle\Entity\Role\RoleService
+        parent: auth.doctrine_manager
+        calls:
+            - [init]
+
+    auth.access_service:
+        class: AuthBundle\Entity\Access\AccessService
         parent: auth.doctrine_manager
         calls:
             - [init]
