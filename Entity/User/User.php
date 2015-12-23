@@ -16,6 +16,7 @@ use AuthBundle\Entity\Access\Access;
  * @ORM\Entity()
  * @ORM\Table(name="user")
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="AuthBundle\Entity\User\UserRepository")
  * @DataMapper\Mapper()
  */
 class User
@@ -43,7 +44,7 @@ class User
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     protected $username;
 
@@ -61,7 +62,7 @@ class User
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     protected $email;
 
@@ -85,7 +86,7 @@ class User
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
@@ -97,7 +98,8 @@ class User
 
     /**
      * @var Role
-     * @ORM\OneToOne(targetEntity="AuthBundle\Entity\Role\Role")
+     * @ORM\ManyToOne(targetEntity="AuthBundle\Entity\Role\Role")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
     private $role;
 

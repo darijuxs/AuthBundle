@@ -26,6 +26,12 @@ services:
         tags:
             -  { name: console.command }
 
+    auth.command.user_command:
+        class: AuthBundle\Command\UserCommand
+        arguments: ["@auth.user_service"]
+        tags:
+            -  { name: console.command }
+
     auth.role_service:
         class: AuthBundle\Entity\Role\RoleService
         parent: auth.doctrine_manager
@@ -35,5 +41,12 @@ services:
     auth.access_service:
         class: AuthBundle\Entity\Access\AccessService
         parent: auth.doctrine_manager
+        calls:
+            - [init]
+
+    auth.user_service:
+        class: AuthBundle\Entity\User\UserService
+        parent: auth.doctrine_manager
+        arguments: ["%secret%"]
         calls:
             - [init]
