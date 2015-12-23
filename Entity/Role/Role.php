@@ -5,7 +5,6 @@ namespace AuthBundle\Entity\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use RAPIBundle\DataMapper\Annotation as DataMapper;
-use AuthBundle\Entity\User\User;
 use AuthBundle\Entity\Access\Access;
 
 /**
@@ -34,14 +33,7 @@ class Role
      * @var string
      * @ORM\Column(type="string", length=32, unique=true)
      */
-    protected $role;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="AuthBundle\Entity\User\User", inversedBy="role")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    protected $user;
+    protected $name;
 
     /**
      * @var Access[]
@@ -67,38 +59,18 @@ class Role
      * @DataMapper\String()
      * @return string
      */
-    public function getRole()
+    public function getName()
     {
-        return $this->role;
+        return $this->name;
     }
 
     /**
-     * @param $role
+     * @param $name
      * @return $this
      */
-    public function setRole($role)
+    public function setName($name)
     {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    /**
-     * @DataMapper\Object()
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     * @return $this
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
+        $this->name = $name;
 
         return $this;
     }

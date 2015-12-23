@@ -112,7 +112,7 @@ class User
     public function __construct()
     {
         $this->tokens = new ArrayCollection();
-        $this->$accesses = new ArrayCollection();
+        $this->accesses = new ArrayCollection();
     }
 
     /**

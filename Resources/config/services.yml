@@ -13,3 +13,15 @@ services:
     auth.login:
         class: AuthBundle\Authentication\Authentication
         arguments: ["@bs.rapi.request", "@auth.current_user"]
+
+    auth.command.role_command:
+        class: AuthBundle\Command\RoleCommand
+        arguments: ["@auth.doctrine_manager", "@auth.role_service"]
+        tags:
+            -  { name: console.command }
+
+    auth.role_service:
+        class: AuthBundle\Entity\Role\RoleService
+        parent: auth.doctrine_manager
+        calls:
+            - [init]
