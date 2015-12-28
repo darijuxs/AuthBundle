@@ -15,7 +15,7 @@ class LoginController extends RAPIController
     public function loginAction()
     {
         try {
-            $token = $this->get("auth.login")->login();
+            $user = $this->get("auth.login")->login();
         } catch (Exception $e) {
             return $this->getResponse()
                 ->setStatusCode(HttpStatusCode::HTTP_UNAUTHORIZED)
@@ -24,7 +24,7 @@ class LoginController extends RAPIController
         }
 
         return $this->getResponse()
-            ->setResult($token)
+            ->setResult($this->getDataMapper()->map($user))
             ->get();
 
     }

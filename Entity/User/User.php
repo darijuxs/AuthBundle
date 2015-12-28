@@ -2,6 +2,7 @@
 
 namespace AuthBundle\Entity\User;
 
+use AuthBundle\Authentication\Model\User\UserInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use RAPIBundle\DataMapper\Annotation as DataMapper;
@@ -19,7 +20,7 @@ use AuthBundle\Entity\Access\Access;
  * @ORM\Entity(repositoryClass="AuthBundle\Entity\User\UserRepository")
  * @DataMapper\Mapper()
  */
-class User
+class User implements UserInterface
 {
     const ID = "id";
     const USERNAME = "username";

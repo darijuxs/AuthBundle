@@ -4,15 +4,12 @@ services:
         calls:
             - [setManager, ["@service_container"]]
 
-    auth.current_user:
-        class: AuthBundle\Authentication\CurrentUser\CurrentUser
+    auth.login:
+        class: AuthBundle\Authentication\Authentication
+        arguments: ["@bs.rapi.request"]
         parent: auth.doctrine_manager
         calls:
             - [setCurrentUserManager, ["%auth.current_user%"]]
-
-    auth.login:
-        class: AuthBundle\Authentication\Authentication
-        arguments: ["@bs.rapi.request", "@auth.current_user"]
 
     auth.command.role_command:
         class: AuthBundle\Command\RoleCommand
@@ -47,6 +44,12 @@ services:
     auth.user_service:
         class: AuthBundle\Entity\User\UserService
         parent: auth.doctrine_manager
-        arguments: ["%secret%"]
+        arguments: ["@auth.token_service", "%secret%"]
+        calls:
+            - [init]
+
+    auth.token_service:
+        class: AuthBundle\Entity\Token\TokenService
+        parent: auth.doctrine_manager
         calls:
             - [init]

@@ -1,13 +1,17 @@
 <?php
 
-namespace AuthBundle\Entity\User;
+namespace AuthBundle\Model\User;
 
 use AuthBundle\Authentication\DoctrineManager;
+use AuthBundle\Authentication\Model\Role\RoleInterface;
+use AuthBundle\Authentication\Model\User\UserInterface;
+use AuthBundle\Authentication\Model\User\UserRepositoryInterface;
 use AuthBundle\Entity\Role\Exception\RoleNotFoundException;
 use AuthBundle\Entity\Role\Role;
 use AuthBundle\Entity\Role\RoleRepository;
 use AuthBundle\Entity\Token\TokenService;
 use AuthBundle\Entity\User\Exception\UserExistsException;
+use AuthBundle\Entity\User\User;
 
 /**
  * Class UserService
@@ -16,7 +20,7 @@ use AuthBundle\Entity\User\Exception\UserExistsException;
 class UserService extends DoctrineManager
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepo;
 
@@ -48,8 +52,8 @@ class UserService extends DoctrineManager
 
     public function init()
     {
-        $this->roleRepo = $this->getManager()->getRepository(Role::class);
-        $this->userRepo = $this->getManager()->getRepository(User::class);
+        $this->roleRepo = $this->getManager()->getRepository(RoleInterface::class);
+        $this->userRepo = $this->getManager()->getRepository(UserInterface::class);
     }
 
     /**

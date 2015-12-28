@@ -3,16 +3,11 @@
 namespace AuthBundle\Command;
 
 use AuthBundle\Entity\User\UserService;
-use InvalidArgumentException;
-use AuthBundle\Authentication\DoctrineManager;
-use AuthBundle\Entity\Access\AccessService;
 use AuthBundle\Exception\AuthenticationException;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * Class AccessCommand
@@ -65,6 +60,6 @@ class UserCommand extends Command
             return;
         }
 
-        $output->writeln(sprintf('<fg=green>Access rule created successfully for route: %s.</>', $user->getUsername()));
+        $output->writeln(sprintf('<fg=green>Created user: %s.</>', $user->getUsername()));
     }
 }

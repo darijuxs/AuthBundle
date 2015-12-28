@@ -13,6 +13,7 @@ use RAPIBundle\DataMapper\Annotation as DataMapper;
  * @ORM\Entity()
  * @ORM\Table(name="token")
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="AuthBundle\Entity\Token\TokenRepository")
  * @DataMapper\Mapper()
  */
 class Token

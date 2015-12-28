@@ -2,13 +2,13 @@
 
 namespace AuthBundle\Authentication\Exception;
 
-use Exception;
+use AuthBundle\Exception\AuthenticationException;
 
 /**
  * Class InterfaceNotImplemented
  * @package AuthBundle\Authentication\Exception
  */
-class InterfaceNotImplemented extends Exception
+class InterfaceNotImplemented extends AuthenticationException
 {
     /**
      * InterfaceNotImplemented constructor.

@@ -12,6 +12,7 @@ use AuthBundle\Entity\Role\Role;
  *
  * @ORM\Entity()
  * @ORM\Table(name="access")
+ * @ORM\Entity(repositoryClass="AuthBundle\Entity\Access\AccessRepository")
  * @DataMapper\Mapper()
  */
 class Access
