@@ -1,14 +1,12 @@
 <?php
 
-namespace AuthBundle\Entity\Role\Exception;
-
-use AuthBundle\Exception\AuthenticationException;
+namespace AuthBundle\Exception;
 
 /**
  * Class RoleExistsException
- * @package AuthBundle\Entity\Role\Exception
+ * @package AuthBundle\Exception
  */
-class RoleExistsException extends AuthenticationException
+class RoleExistsException extends AuthException
 {
     /**
      * RoleExistsException constructor.

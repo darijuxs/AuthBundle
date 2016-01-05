@@ -2,9 +2,8 @@
 
 namespace AuthBundle\Command;
 
-use AuthBundle\Authentication\DoctrineManager;
-use AuthBundle\Entity\Role\Exception\RoleExistsException;
 use AuthBundle\Entity\Role\RoleService;
+use AuthBundle\Exception\RoleExistsException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,25 +16,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RoleCommand extends Command
 {
     /**
-     * @var DoctrineManager
-     */
-    private $manager;
-
-    /**
      * @var RoleService
      */
     private $roleService;
 
     /**
      * RoleCommand constructor.
-     * @param DoctrineManager $manager
      * @param RoleService $roleService
      */
-    public function __construct(DoctrineManager $manager, RoleService $roleService)
+    public function __construct(RoleService $roleService)
     {
         parent::__construct();
 
-        $this->manager = $manager;
         $this->roleService = $roleService;
     }
 
@@ -44,11 +36,7 @@ class RoleCommand extends Command
         $this
             ->setName('auth:role:add')
             ->setDescription('Generate role')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'User role name. Example: admin, user, super_admin.'
-            );
+            ->addArgument('name', InputArgument::REQUIRED, 'User role name. Example: admin, user, super_admin.');
     }
 
     /**

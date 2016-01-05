@@ -4,8 +4,9 @@ namespace AuthBundle\Entity\Token;
 
 use DateTime;
 use DateInterval;
-use AuthBundle\Authentication\DoctrineManager;
+use AuthBundle\Helper\Generator;
 use AuthBundle\Entity\User\User;
+use AuthBundle\Authentication\DoctrineManager;
 
 /**
  * Class TokenService
@@ -20,27 +21,33 @@ class TokenService extends DoctrineManager
 
     public function init()
     {
-        $this->tokenRepo = $this->getManager()->getRepository(Token::class);
+        $this->tokenRepo = $this
+            ->getManager()
+            ->getRepository(Token::class);
     }
 
     /**
      * @param User $user
+     * @return $this
      */
     public function create(User $user)
     {
-        $token = md5(uniqid("", true));
-
         $expiresAt = (new DateTime())
             ->add(new DateInterval("P7D"));
 
         $token = (new Token())
             ->setUser($user)
-            ->setToken($token)
+            ->setToken(Generator::generateToken())
             ->setExpiresAt($expiresAt);
 
         $this->getManager()->persist($token);
         $this->getManager()->flush();
 
+        return $token;
+    }
+
+    public function deleteExpiresTokens()
+    {
 
     }
 }

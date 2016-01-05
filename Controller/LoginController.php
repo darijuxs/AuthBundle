@@ -2,11 +2,16 @@
 
 namespace AuthBundle\Controller;
 
-use Exception;
+use AuthBundle\Exception\AuthException;
+use AuthBundle\Entity\User\UserFilter;
 use RAPIBundle\Controller\RAPIController;
 use RAPIBundle\Response\HttpStatusCode;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * Class LoginController
+ * @package AuthBundle\Controller
+ */
 class LoginController extends RAPIController
 {
     /**
@@ -16,7 +21,7 @@ class LoginController extends RAPIController
     {
         try {
             $user = $this->get("auth.login")->login();
-        } catch (Exception $e) {
+        } catch (AuthException $e) {
             return $this->getResponse()
                 ->setStatusCode(HttpStatusCode::HTTP_UNAUTHORIZED)
                 ->setError($e->getMessage())
@@ -24,7 +29,7 @@ class LoginController extends RAPIController
         }
 
         return $this->getResponse()
-            ->setResult($this->getDataMapper()->map($user))
+            ->setResult($this->getDataMapper()->map($user, UserFilter::loginFilter(), 3))
             ->get();
 
     }

@@ -3,7 +3,6 @@
 namespace AuthBundle\Authentication;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -13,12 +12,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DoctrineManager
 {
     /**
-     * @var EntityManager|DocumentManager
+     * @var EntityManager
      */
     private $manager;
 
     /**
-     * @return DocumentManager|EntityManager
+     * @return EntityManager
      */
     public function getManager()
     {
@@ -29,7 +28,7 @@ class DoctrineManager
      * Choose correct doctrine manager: ODM or ORM
      *
      * @param ContainerInterface $containerInterface
-     * @return EntityManager|DocumentManager
+     * @return EntityManager
      */
     public function setManager(ContainerInterface $containerInterface)
     {

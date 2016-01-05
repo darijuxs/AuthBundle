@@ -3,11 +3,12 @@
 namespace AuthBundle\Entity\User;
 
 use AuthBundle\Authentication\DoctrineManager;
-use AuthBundle\Entity\Role\Exception\RoleNotFoundException;
 use AuthBundle\Entity\Role\Role;
 use AuthBundle\Entity\Role\RoleRepository;
 use AuthBundle\Entity\Token\TokenService;
-use AuthBundle\Entity\User\Exception\UserExistsException;
+use AuthBundle\Exception\RoleNotFoundException;
+use AuthBundle\Exception\UserExistsException;
+use AuthBundle\Helper\Generator;
 
 /**
  * Class UserService
@@ -72,9 +73,8 @@ class UserService extends DoctrineManager
             throw new UserExistsException($username);
         }
 
-        $salt = uniqid(mt_rand(), true);
-
-        $encryptedPassword = hash('sha512', $salt . $this->secret . $password);
+        $salt = Generator::generateSalt();
+        $encryptedPassword = Generator::hash($salt, $this->secret, $password);
 
         $user = (new User())
             ->setUsername($username)

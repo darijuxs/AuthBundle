@@ -1,18 +1,16 @@
 <?php
 
-namespace AuthBundle\Authentication\Model\User\Exception;
-
-use AuthBundle\Exception\AuthenticationException;
+namespace AuthBundle\Exception;
 
 /**
  * Class UserNotFoundException
- * @package AuthBundle\Model\User\Exception
+ * @package AuthBundle\Exception
  */
-class UserNotFoundException extends AuthenticationException
+class UserNotFoundException extends AuthException
 {
     /**
      * UserNotFoundException constructor.
-     * @param string $name
+     * @param null $name
      */
     public function __construct($name = null)
     {

@@ -2,13 +2,14 @@
 
 namespace AuthBundle\Command;
 
+use Exception;
+use UnexpectedValueException;
 use InvalidArgumentException;
-use AuthBundle\Authentication\DoctrineManager;
 use AuthBundle\Entity\Access\AccessService;
-use AuthBundle\Exception\AuthenticationException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -18,25 +19,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AccessCommand extends Command
 {
     /**
-     * @var DoctrineManager
-     */
-    private $manager;
-
-    /**
      * @var AccessService
      */
     private $accessService;
 
     /**
      * RoleCommand constructor.
-     * @param DoctrineManager $manager
      * @param AccessService $accessService
      */
-    public function __construct(DoctrineManager $manager, AccessService $accessService)
+    public function __construct(AccessService $accessService)
     {
         parent::__construct();
 
-        $this->manager = $manager;
         $this->accessService = $accessService;
     }
 
@@ -45,16 +39,10 @@ class AccessCommand extends Command
         $this
             ->setName('auth:access:add')
             ->setDescription('Generate access')
-            ->addArgument(
-                'route',
-                InputArgument::REQUIRED,
-                'Route name'
-            )
-            ->addArgument(
-                'parameter',
-                InputArgument::REQUIRED,
-                'Role name'
-            );
+            ->addArgument('route', InputArgument::REQUIRED, 'Route name')
+            ->addOption("type", null, InputOption::VALUE_REQUIRED, "Access type")
+            ->addOption("value", null, InputOption::VALUE_REQUIRED, "Access type value")
+        ;
     }
 
     /**
@@ -65,19 +53,14 @@ class AccessCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $parameter = $this->parameterParser($input);
-
             $access = $this
                 ->accessService
                 ->create(
                     $input->getArgument('route'),
-                    $parameter["type"],
-                    $parameter["value"]
+                    $this->getType($input),
+                    $this->getValue($input)
                 );
-        } catch (AuthenticationException $e) {
-            $output->writeln('<fg=red>'.$e->getMessage().'</>');
-            return;
-        } catch (InvalidArgumentException $e) {
+        } catch (Exception $e) {
             $output->writeln('<fg=red>'.$e->getMessage().'</>');
             return;
         }
@@ -86,28 +69,45 @@ class AccessCommand extends Command
     }
 
     /**
-     * Parse input parameter value and select correct type.
+     * Parse option "type" value and select correct type.
      *
      * @param InputInterface $input
      * @return mixed
      */
-    private function parameterParser(InputInterface $input)
+    private function getType(InputInterface $input)
     {
-        $parameters = explode("=", $input->getArgument("parameter"));
-        if (isset($parameters[0]) and isset($parameters[1])) {
-            if ($parameters[0] === AccessService::ACCESS_BY_ROLE or $parameters[0] === AccessService::ACCESS_BY_USER) {
-                return [
-                    "type" => $parameters[0],
-                    "value" => $parameters[1]
-                ];
-            }
+        $parameter = $input->getOption("type");
+
+        if ($parameter === AccessService::ACCESS_BY_ROLE or $parameter === AccessService::ACCESS_BY_USER) {
+            return $parameter;
+        }
+
+        if (!$parameter) {
+            throw new UnexpectedValueException(sprintf('Option "--type" is required'));
         }
 
         throw new InvalidArgumentException(sprintf(
-            'Parameter "%s" is invalid. Valid types are "%s" and "%s".',
-            $parameters[0],
+            'Type "%s" is invalid. Valid types are "%s" and "%s".',
+            $parameter,
             AccessService::ACCESS_BY_ROLE,
             AccessService::ACCESS_BY_USER
         ));
+    }
+
+    /**
+     * Parse option "value" value .
+     *
+     * @param InputInterface $input
+     * @return mixed
+     */
+    private function getValue(InputInterface $input)
+    {
+        $value = $input->getOption("value");
+
+        if ($value) {
+            return $value;
+        }
+
+        throw new UnexpectedValueException(sprintf('Option "--value" is required'));
     }
 }

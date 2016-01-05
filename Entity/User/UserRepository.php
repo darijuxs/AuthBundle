@@ -2,15 +2,13 @@
 
 namespace AuthBundle\Entity\User;
 
-use DateTime;
 use Doctrine\ORM\EntityRepository;
-use AuthBundle\Authentication\Model\User\UserRepositoryInterface;
 
 /**
  * Class UserRepository
  * @package AuthBundle\Entity\User
  */
-class UserRepository extends EntityRepository implements UserRepositoryInterface
+class UserRepository extends EntityRepository
 {
     /**
      * @return \Doctrine\ORM\QueryBuilder
@@ -47,9 +45,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         return $this->baseQuery()
             ->join("u.tokens", "t")
             ->andWhere("t.token = :token")
-            ->andWhere("t.expiresAt > :expiresAt")
             ->setParameter("token", $token)
-            ->setParameter("expiresAt", new DateTime())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

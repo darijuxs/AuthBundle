@@ -2,11 +2,12 @@
 
 namespace AuthBundle\Authentication;
 
+use AuthBundle\Entity\Token\TokenService;
+use AuthBundle\Entity\User\User;
+use AuthBundle\Entity\User\UserRepository;
+use AuthBundle\Exception\UserNotFoundException;
+use AuthBundle\Helper\Generator;
 use RAPIBundle\Request\Request;
-use AuthBundle\Authentication\Exception\InterfaceNotImplemented;
-use AuthBundle\Authentication\Model\User\Exception\UserNotFoundException;
-use AuthBundle\Authentication\Model\User\UserInterface;
-use AuthBundle\Authentication\Model\User\UserRepositoryInterface;
 
 /**
  * Class Authentication
@@ -20,57 +21,59 @@ class Authentication extends DoctrineManager
     private $request;
 
     /**
-     * @var UserRepositoryInterface
+     * @var string
      */
-    private $userRepository;
+    private $secret;
 
     /**
-     * @var UserInterface
+     * @var TokenService
      */
-    private $user;
+    private $tokenService;
+
+    /**
+     * @var UserRepository
+     */
+    private $userRepo;
 
     /**
      * Authentication constructor.
      * @param Request $request
+     * @param $secret
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, TokenService $tokenService, $secret)
     {
         $this->request = $request;
+        $this->tokenService = $tokenService;
+        $this->secret = $secret;
     }
 
-    /**
-     * @param $currentUser
-     * @throws InterfaceNotImplemented
-     */
-    public function setCurrentUserManager($currentUser)
+    public function init()
     {
-        if (!class_exists($currentUser)) {
-//            @todo implement exception
-        }
-
-        $this->userRepository = $this
+        $this->userRepo = $this
             ->getManager()
-            ->getRepository($currentUser);
-
-        if (!$this->userRepository instanceof UserRepositoryInterface) {
-            throw new InterfaceNotImplemented(UserRepositoryInterface::class, get_class($this->user));
-        }
+            ->getRepository(User::class);
     }
 
     /**
-     * @return UserInterface|null
+     * @return User|null
      * @throws UserNotFoundException
      */
     public function login()
     {
-        $user = $this
-            ->userRepository
-            ->findOneByToken($this->request->get("token"));
+        $username = $this->request->get('username');
 
-        if ($user instanceof UserInterface) {
-            return $user;
+        $user = $this->userRepo->findOneByUsername($username);
+        if (!$user instanceof User) {
+            throw new UserNotFoundException($username);
         }
 
-        throw new UserNotFoundException();
+        $encryptedPassword = Generator::hash($user->getSalt(), $this->secret, $this->request->get('password'));
+        if ($encryptedPassword !== $user->getPassword()) {
+            throw new UserNotFoundException($username);
+        }
+
+        $this->tokenService->create($user);
+
+        return $user;
     }
 }

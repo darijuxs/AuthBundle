@@ -3,12 +3,12 @@
 namespace AuthBundle\Entity\Access;
 
 use AuthBundle\Authentication\DoctrineManager;
-use AuthBundle\Entity\Role\Exception\RoleNotFoundException;
 use AuthBundle\Entity\Role\Role;
 use AuthBundle\Entity\Role\RoleRepository;
-use AuthBundle\Entity\User\Exception\UserNotFoundException;
 use AuthBundle\Entity\User\User;
 use AuthBundle\Entity\User\UserRepository;
+use AuthBundle\Exception\RoleNotFoundException;
+use AuthBundle\Exception\UserNotFoundException;
 
 /**
  * Class AccessService

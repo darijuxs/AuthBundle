@@ -12,14 +12,12 @@ use AuthBundle\Entity\Access\Access;
  *
  * @ORM\Entity()
  * @ORM\Table(name="role")
- * @ORM\Entity(repositoryClass="AuthBundle\Entity\Role\RoleRepository")
  * @DataMapper\Mapper()
  */
 class Role
 {
     const ID = "id";
-    const ROLE = "role";
-    const USER = "user";
+    const NAME = "name";
     const ACCESSES = "accesses";
 
     /**
@@ -42,6 +40,9 @@ class Role
      */
     protected $accesses;
 
+    /**
+     * Role constructor.
+     */
     public function __construct()
     {
         $this->accesses = new ArrayCollection();

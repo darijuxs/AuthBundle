@@ -6,20 +6,20 @@ services:
 
     auth.login:
         class: AuthBundle\Authentication\Authentication
-        arguments: ["@bs.rapi.request"]
+        arguments: ["@bs.rapi.request", "@auth.token_service", "%secret%"]
         parent: auth.doctrine_manager
         calls:
-            - [setCurrentUserManager, ["%auth.current_user%"]]
+            - [init]
 
     auth.command.role_command:
         class: AuthBundle\Command\RoleCommand
-        arguments: ["@auth.doctrine_manager", "@auth.role_service"]
+        arguments: ["@auth.role_service"]
         tags:
             -  { name: console.command }
 
     auth.command.access_command:
         class: AuthBundle\Command\AccessCommand
-        arguments: ["@auth.doctrine_manager", "@auth.access_service"]
+        arguments: ["@auth.access_service"]
         tags:
             -  { name: console.command }
 
@@ -41,15 +41,15 @@ services:
         calls:
             - [init]
 
-    auth.user_service:
-        class: AuthBundle\Entity\User\UserService
+    auth.token_service:
+        class: AuthBundle\Entity\Token\TokenService
         parent: auth.doctrine_manager
-        arguments: ["@auth.token_service", "%secret%"]
         calls:
             - [init]
 
-    auth.token_service:
-        class: AuthBundle\Entity\Token\TokenService
+    auth.user_service:
+        class: AuthBundle\Entity\User\UserService
+        arguments: ["@auth.token_service", "%secret%"]
         parent: auth.doctrine_manager
         calls:
             - [init]

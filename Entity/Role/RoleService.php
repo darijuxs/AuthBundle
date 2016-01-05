@@ -3,7 +3,7 @@
 namespace AuthBundle\Entity\Role;
 
 use AuthBundle\Authentication\DoctrineManager;
-use AuthBundle\Entity\Role\Exception\RoleExistsException;
+use AuthBundle\Exception\RoleExistsException;
 
 /**
  * Class RoleService
