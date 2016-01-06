@@ -22,8 +22,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('data_manager')->end()
-                ->scalarNode('current_user')->end()
+                ->scalarNode('db_manager')->end()
+                ->scalarNode('multiple_token')->end()
             ->end()
         ;
 

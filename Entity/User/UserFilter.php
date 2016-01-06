@@ -34,4 +34,27 @@ class UserFilter
             ]
         ];
     }
+
+    /**
+     * @return array
+     */
+    public static function loginOneTokenFilter()
+    {
+        return [
+            User::ID,
+            User::USERNAME,
+            User::EMAIL,
+            User::CREATED_AT,
+            User::UPDATED_AT,
+            User::LAST_TOKEN => [
+                Token::TOKEN
+            ],
+            User::ROLE => [
+                Role::NAME,
+                Role::ACCESSES => [
+                    Access::ROUTE
+                ]
+            ]
+        ];
+    }
 }

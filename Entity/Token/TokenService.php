@@ -19,11 +19,21 @@ class TokenService extends DoctrineManager
      */
     private $tokenRepo;
 
-    public function init()
+    /**
+     * @var bool
+     */
+    private $multipleTokens;
+
+    /**
+     * @param bool $multipleTokens
+     */
+    public function init($multipleTokens)
     {
         $this->tokenRepo = $this
             ->getManager()
             ->getRepository(Token::class);
+
+        $this->multipleTokens = (bool) $multipleTokens;
     }
 
     /**
@@ -43,11 +53,35 @@ class TokenService extends DoctrineManager
         $this->getManager()->persist($token);
         $this->getManager()->flush();
 
+        $this->deleteExpiresTokens($user);
+
         return $token;
     }
 
-    public function deleteExpiresTokens()
+    /**
+     * Delete tokens.
+     * If setting "multiple_token" is false then leave only one token in database. Last token.
+     * If setting "multiple_token" is true then delete only expired tokens
+     *
+     * @param User $user
+     */
+    public function deleteExpiresTokens(User $user)
     {
+        if ($this->multipleTokens === true) {
+            $tokens = $this->tokenRepo->findExpiresTokenByUser($user);
+        } else {
+            $tokens = $this->tokenRepo->findAllByUser($user);
+        }
 
+        foreach ($tokens as $token) {
+            //Don't delete last token if required only one token
+            if ($this->multipleTokens === false and end($tokens) === $token) {
+                continue;
+            }
+
+            $this->getManager()->remove($token);
+        }
+
+        $this->getManager()->flush();
     }
 }

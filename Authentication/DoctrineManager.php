@@ -33,7 +33,7 @@ class DoctrineManager
     public function setManager(ContainerInterface $containerInterface)
     {
         $this->manager = $containerInterface->get(
-            $containerInterface->getParameter("auth.data_manager")
+            $containerInterface->getParameter("auth.db_manager")
         );
     }
 }

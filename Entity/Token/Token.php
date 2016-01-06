@@ -10,7 +10,7 @@ use RAPIBundle\DataMapper\Annotation as DataMapper;
 /**
  * Class Token
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AuthBundle\Entity\Token\TokenRepository")
  * @ORM\Table(name="token")
  * @ORM\HasLifecycleCallbacks()
  * @DataMapper\Mapper()

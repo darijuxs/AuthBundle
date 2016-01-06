@@ -28,8 +28,15 @@ class LoginController extends RAPIController
                 ->get();
         }
 
+        //Decide if show one ore multiple tokens
+        if ($this->getParameter("auth.multiple_token") === true) {
+            $dataMapper = $this->getDataMapper()->map($user, UserFilter::loginFilter(), 2);
+        } else {
+            $dataMapper = $this->getDataMapper()->map($user, UserFilter::loginOneTokenFilter(), 2);
+        }
+
         return $this->getResponse()
-            ->setResult($this->getDataMapper()->map($user, UserFilter::loginFilter(), 3))
+            ->setResult($dataMapper)
             ->get();
 
     }

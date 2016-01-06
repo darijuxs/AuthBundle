@@ -13,10 +13,9 @@ use AuthBundle\Entity\Access\Access;
 /**
  * Class User
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AuthBundle\Entity\User\UserRepository")
  * @ORM\Table(name="user")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="AuthBundle\Entity\User\UserRepository")
  * @DataMapper\Mapper()
  */
 class User
@@ -32,6 +31,7 @@ class User
     const UPDATED_AT = "updatedAt";
     const ROLE = "role";
     const TOKENS = "tokens";
+    const LAST_TOKEN = "lastToken";
     const ACCESSES = "accesses";
 
     /**
@@ -293,6 +293,15 @@ class User
     public function getTokens()
     {
         return $this->tokens;
+    }
+
+    /**
+     * @DataMapper\Object()
+     * @return Token
+     */
+    public function getLastToken()
+    {
+        return $this->tokens->last();
     }
 
     /**

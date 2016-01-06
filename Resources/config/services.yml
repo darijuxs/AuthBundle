@@ -45,7 +45,7 @@ services:
         class: AuthBundle\Entity\Token\TokenService
         parent: auth.doctrine_manager
         calls:
-            - [init]
+            - [init, ["%auth.multiple_token%"]]
 
     auth.user_service:
         class: AuthBundle\Entity\User\UserService
