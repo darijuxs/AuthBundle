@@ -87,4 +87,32 @@ class AccessService extends DoctrineManager
 
         return null;
     }
+
+    /**
+     * Check if user has permission to access specific route
+     *
+     * @param User $user
+     * @param $route
+     * @return bool
+     */
+    public function checkPermissions(User $user, $route)
+    {
+        //Check if access exists for current role
+        $roleAccesses = $user->getRole()->getAccesses();
+        foreach ($roleAccesses as $access) {
+            if ($access->getRoute() === $route) {
+                return true;
+            }
+        }
+
+        //Check is access exists for particular user
+        $userAccesses = $user->getAccesses();
+        foreach ($userAccesses as $access) {
+            if ($access->getRoute() === $route) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class LoginController extends RAPIController
 {
     /**
-     * @Route("/login/", name="auth_login")
+     * @Route("/login/", name="auth_login", options={"access_validation"=false})
      */
     public function loginAction()
     {

@@ -36,8 +36,14 @@ class Authentication extends DoctrineManager
     private $userRepo;
 
     /**
+     * @var User
+     */
+    private $currentUser;
+
+    /**
      * Authentication constructor.
      * @param Request $request
+     * @param TokenService $tokenService
      * @param $secret
      */
     public function __construct(Request $request, TokenService $tokenService, $secret)
@@ -75,5 +81,32 @@ class Authentication extends DoctrineManager
         $this->tokenService->create($user);
 
         return $user;
+    }
+
+    /**
+     * Set current user
+     *
+     * @param $token
+     * @return User|null
+     */
+    public function setCurrentUser($token)
+    {
+        if ($this->currentUser instanceof User) {
+            return $this;
+        }
+
+        $this->currentUser = $this->userRepo->findOneByToken($token);
+
+        return $this;
+    }
+
+    /**
+     * Get current user
+     *
+     * @return User
+     */
+    public function getCurrentUser()
+    {
+        return $this->currentUser;
     }
 }

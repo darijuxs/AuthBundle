@@ -53,3 +53,9 @@ services:
         parent: auth.doctrine_manager
         calls:
             - [init]
+
+    auth.rapi.request_listener:
+        class: AuthBundle\Listener\RequestListener
+        arguments: ["@bs.rapi.request", "@router", "@auth.login", "@auth.access_service"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
