@@ -87,7 +87,7 @@ class Authentication extends DoctrineManager
      * Set current user
      *
      * @param $token
-     * @return User|null
+     * @return $this
      */
     public function setCurrentUser($token)
     {
